@@ -1,0 +1,143 @@
+/* YEK/SASS (https://github.com/yek/sass || https://npmjs.com/yek/sass) */
+@include clear-root;
+@include set-root(
+  (
+    color-progress: hsl(5, 100%, 50%),
+    color-progress-alpha: hsl(5, 100%, 70%),
+  )
+);
+
+body {
+  @include center(flex-column);
+  background: color(light-gray);
+}
+
+.description {
+  margin-top: 45px;
+}
+
+.progress {
+  @include set-var(progress-value, 50);
+  @include set-var(progress-indicator-size, 350px);
+  @include set-var(progress-size, 190px);
+  @include set-var(progress-inner-size, calc(#{val(progress-size)} - 20px));
+  border: 5px solid color(progress-alpha);
+
+  &::before {
+    content: '';
+    display: block;
+    @include absolute(50%, 50%);
+    @include size($tog: 50%);
+    @include radius(50, '%');
+    min-width: 8px;
+    min-height: 8px;
+    transform: translate(-50%, -50%);
+  }
+  &[data-value='100'] {
+    @include set-var(color-progress, #557c55);
+    @include set-var(color-progress-alpha, #a6cf98);
+
+    &::before {
+      animation: progress-firework 1.3s 0.1s ease infinite both;
+    }
+  }
+
+  &,
+  &-inner {
+    @include relative;
+    @include center;
+    @include size($tog: val(progress-size));
+    @include radius(val(progress-size), '');
+    background: color(gray);
+  }
+
+  &-inner {
+    @include size($tog: val(progress-inner-size));
+    border: none;
+    margin: auto;
+    overflow: hidden;
+  }
+
+  &--upper-half-value &-label {
+    color: color(light-gray) !important;
+  }
+
+  &-label {
+    @include absolute(50%, 50%);
+    @include size(90%);
+    transform: translate(-50%, -50%);
+    display: inline-block;
+    color: color(black);
+    text-align: center;
+    overflow: hidden;
+
+    strong {
+      font-size: 200%;
+    }
+    span {
+      font-size: 120%;
+    }
+  }
+
+  &-indicator {
+    background: color(progress);
+    transform-origin: center center;
+    opacity: 0.6;
+    animation: progress-wave-animation 8s linear infinite both;
+    @include absolute($top: calc(100% - #{val(progress-value)} * 1%), $left: -50%, $right: 50%);
+    @include size($tog: val(progress-indicator-size));
+    @include radius(calc(#{val(progress-indicator-size)} / 2.5), '');
+  }
+
+  &-indicator:nth-child(2) {
+    background: color(progress-alpha);
+    transform: rotate(90deg);
+    @include radius(90);
+  }
+}
+
+@keyframes progress-firework {
+  from,
+  0% {
+    @include size($tog: 50%);
+    background: color(progress);
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+  }
+  to,
+  100% {
+    @include size($tog: 150%);
+    background: color(progress-alpha);
+    opacity: 0;
+  }
+}
+
+@keyframes progress-wave-animation {
+  to,
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+*:not(.watermark) {
+  z-index: 2;
+}
+
+.description {
+  display: flex;
+  max-width: 300px;
+  place-items: center;
+  justify-content: space-between;
+
+  & input {
+    max-width: 30%;
+  }
+}
+
+.watermark {
+  margin-top: 2rem;
+  color: color(primary);
+  align-self: start;
+}

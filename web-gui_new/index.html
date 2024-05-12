@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vertical Sliders</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="main">
+      <div class="buildings">
+        <button id="themeToggle">Day/Night</button>
+        <div class="progress-bar stripes animated reverse slower">
+          <span class="progress-bar-inner"></span>
+          <p id="kwh">0</p>
+          <p id="kwhconsume">0</p>
+        </div>
+        <div class="images">
+          <div class="imgelement">
+            <p id="petershouse" class="energyprod">100</p>
+            <img src="petershouse.png" alt="" width="150" srcset="" />
+          </div>
+          <div class="imgelement">
+            <p id="office" class="energyprod">100</p>
+            <img src="offices.png" alt="" width="150" srcset="" />
+          </div>
+          <div class="imgelement">
+            <p id="apartment" class="energyprod">100</p>
+            <img src="apartments.png" alt="" width="150" srcset="" />
+          </div>
+          <div class="imgelement">
+            <p id="shop" class="energyprod">100</p>
+            <img src="shop.png" alt="" width="150" srcset="" />
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="slider-container">
+          <div class="slider">
+            <input type="range" id="slider1" min="0" max="100" value="0" orient="vertical" />
+            <p>Peter's House</p>
+          </div>
+          <div class="slider">
+            <input type="range" id="slider2" min="0" max="100" value="0" orient="vertical" />
+            <p>Office</p>
+          </div>
+          <div class="slider">
+            <input type="range" id="slider3" min="0" max="100" value="0" orient="vertical" />
+            <p>Apartment House</p>
+          </div>
+          <div class="slider">
+            <input type="range" id="slider4" min="0" max="100" value="0" orient="vertical" />
+            <p>Services</p>
+          </div>
+        </div>
+
+        <div class="slider-container">
+          <div class="slider">
+            <input type="range" id="slider5" min="0" max="100" value="0" orient="vertical" />
+            <p>Solar panel 1</p>
+          </div>
+          <div class="slider">
+            <input type="range" id="slider6" min="0" max="100" value="0" orient="vertical" />
+            <p>Solar panel 2</p>
+          </div>
+          <div class="slider">
+            <input type="range" id="slider7" min="0" max="100" value="0" orient="vertical" />
+            <p>Wind turbine</p>
+          </div>
+          <div class="slider">
+            <input type="range" id="slider8" min="0" max="100" value="0" orient="vertical" />
+            <p>Hydro electric station</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+        <script>
+            // Select all slider input elements and initialize them
+            document.querySelectorAll('.slider input[type=range]').forEach(slider => {
+                const output = slider.previousElementSibling; // This gets the <span> element right above each slider
+        
+                // Initialize display with current value
+                output.textContent = slider.value;
+        
+                // Update the display as the slider value changes
+                slider.oninput = function() {
+                    output.textContent = this.value;
+                };
+            });
+        </script>-->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const sliders = document.querySelectorAll('.container .slider-container:nth-child(1) input[type=range]');
+        const sliders2 = document.querySelectorAll('.container .slider-container:nth-child(2) input[type=range]');
+        const kwhDisplay = document.getElementById('kwh');
+        const kwhConsumeDisplay = document.getElementById('kwhconsume');
+        const energyDisplays = document.querySelectorAll('.energyprod');
+        const progressBar = document.querySelector('.progress-bar-inner');
+
+        let currentWidth = 0; // Ensure this is outside to maintain state
+        progressBar.style.width = '0%';
+        let progressInterval = null;
+
+        function updateKwhDisplay() {
+          let totalKwh = 0;
+
+          sliders.forEach((slider, index) => {
+            let value = parseInt(slider.value, 10);
+            totalKwh += value;
+            // Update the corresponding <p> element for each building
+            energyDisplays[index].textContent = `${value} kWh`;
+          });
+
+          // Assuming a direct correlation for simplicity
+          kwhDisplay.textContent = `${Math.round(totalKwh)} kWh`;
+          //kwhConsumeDisplay.textContent = `${Math.round(totalKwh)} kWh`; // or adjust based on specific logic
+        }
+
+        function updateKwhDisplayy() {
+          let totalKwh = 0;
+
+          sliders2.forEach((slider, index) => {
+            let value = parseInt(slider.value, 10);
+            totalKwh += value;
+            // Update the corresponding <p> element for each building
+          });
+
+          // Assuming a direct correlation for simplicity
+          kwhConsumeDisplay.textContent = `${Math.round(totalKwh)} kWh`;
+          //kwhConsumeDisplay.textContent = `${Math.round(totalKwh)} kWh`; // or adjust based on specific logic
+        }
+
+        // Attach event listeners to all sliders
+        sliders.forEach(slider => {
+          slider.addEventListener('input', function () {
+            updateKwhDisplay();
+          });
+        });
+
+        sliders2.forEach(slider => {
+          slider.addEventListener('input', function () {
+            updateKwhDisplayy();
+          });
+        });
+
+        // Initialize the display with correct values on load
+        updateKwhDisplay();
+        updateKwhDisplayy();
+      });
+    </script>
+
+    <script src="integration.js"></script>
+  </body>
+</html>
