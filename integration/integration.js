@@ -273,8 +273,6 @@ const web3 = new Web3(provider);
 // Set up ERC20 contract instance
 const erc20Contract = new web3.eth.Contract(abi, contractAddress);
 
-// Set up your solar energy production monitoring logic
-const dailyProductionKwh = 10; // Replace with your actual production value
 const userAddress = '0x8862BC0e5De157e851fd53dF64d267DB50B5862D'; // Replace with the user's address you want to send tokens to
 
 // Calculate the number of tokens to send
@@ -283,8 +281,6 @@ const tokensToSend = web3.utils.toBN('100000000000000000000');
 // Set up variables
 let total_energy = 0;
 let wallet_balance = 0;
-//const reward_amount = 0.5; // Example reward amount in hypothetical currency
-const currency_name = 'USDT'; // Example currency name
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -292,11 +288,6 @@ function sleep(ms) {
 
 async function test() {
   const growatt = new api({});
-  //console.log('login:',login)
-  //const devices = getAllPlantData['1444463']['devices']['DMG0B0204E']['totalData'].eToday;
-  //console.log('Amount of produced kwh today:',devices)
-  //console.log('getAllPlatData:',JSON.stringify(getAllPlantData,null,' '));
-  //console.log('logout:',logout)
   let login = await growatt.login(user, passwort).catch(e => {
     console.log(e);
   });
@@ -310,12 +301,12 @@ async function test() {
 
       let getAllPlantData = await growatt.getAllPlantData(options);
 
-      const devices = getAllPlantData['1444463']['devices']['DMG0B0204E']['totalData'].eToday;
-      myArray.push(devices);
+      const producedEnergy = getAllPlantData['1444463']['devices']['DMG0B0204E']['totalData'].eToday;
+      myArray.push(producedEnergy);
       const lastElement = myArray[myArray.length - 1];
       let firstElement = myArray[0];
       console.log(myArray);
-      let new_energy = devices;
+      let new_energy = producedEnergy;
 
       /*if (firstElement < lastElement) {
         total_energy + new_energy;
