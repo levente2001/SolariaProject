@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Fetch Devices</title>
+    <title>Solaria</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Device Data</h1>
-    <p id="deviceValue">Loading...</p> <!-- Add this element -->
+  <div class="container">
+    <p class="title">Solaria</p>
+    <p class="contractadress">Contract address: 0x267c881934F8083bd3B9a235828adD9dB496C86B</p>
+    <h1>Produced energy</h1>
+    <p id="deviceValue">Loading...</p>
+    <input placeholder="Username" type="text" name="username" class="input">
+    <input placeholder="Password" type="text" name="password" class="input">
+    <button> 
+        Start
+    </button>
+  </div>
+    
 
     <script>
         async function getDevices() {
             try {
-                const response = await fetch('http://localhost:3000/devices');
+                const response = await fetch('https://solariaproject.onrender.com/devices');
                 const data = await response.json();
                 document.getElementById('deviceValue').textContent = data.devices; // Update this line
             } catch (error) {

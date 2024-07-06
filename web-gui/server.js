@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');  // Add this line
 const api = require('growatt');
 
+
 // Initialize variables
 const user = 'Otthon162';
 const passwort = 'otthon1234';

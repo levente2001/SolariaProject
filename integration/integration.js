@@ -263,7 +263,7 @@ const abi = [
     type: 'function',
   },
 ]; // ERC20 contract ABI
-const contractAddress = '0x9c5e37DB18dA112D9e720B1b1AeF3b0A5de1DCa8'; 
+const contractAddress = '0x267c881934F8083bd3B9a235828adD9dB496C86B'; 
 const providerUrl = 'http://localhost:7545'; 
 
 // Initialize web3 instance with provider
@@ -273,7 +273,7 @@ const web3 = new Web3(provider);
 // Set up ERC20 contract instance
 const erc20Contract = new web3.eth.Contract(abi, contractAddress);
 
-const userAddress = '0x8862BC0e5De157e851fd53dF64d267DB50B5862D'; // Replace with the user's address you want to send tokens to
+const userAddress = '0x87b8b979F11F0776Fb5DD44a6c59CeE4a82DfC85'; // Replace with the user's address you want to send tokens to
 
 // Calculate the number of tokens to send
 const tokensToSend = web3.utils.toBN('100000000000000000000');
@@ -286,35 +286,43 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function test() {
-  const growatt = new api({});
-  let login = await growatt.login(user, passwort).catch(e => {
+async function main() {
+
+  // Declare connencted devices(device0, device1, device2 ...)
+  const device0 = new api({});
+
+
+  let login = await device0.login(user, passwort).catch(e => {
     console.log(e);
   });
 
-  if (growatt.isConnected()) {
+  if (device0.isConnected()) {
     let myArray = [];
 
-    // Loop until stopped
+    
     while (true) {
       let options = { plantData: false, deviceData: true, deviceTyp: false, weather: false, chartLastArray: false };
 
-      let getAllPlantData = await growatt.getAllPlantData(options);
+      let getAllPlantData = await device0.getAllPlantData(options);
 
+
+      //Get data from inverter
       const producedEnergy = getAllPlantData['1444463']['devices']['DMG0B0204E']['totalData'].eToday;
+
+
       myArray.push(producedEnergy);
       const lastElement = myArray[myArray.length - 1];
       let firstElement = myArray[0];
       console.log(myArray);
       let new_energy = producedEnergy;
 
-      /*if (firstElement < lastElement) {
+      if (firstElement < lastElement) {
         total_energy + new_energy;
-        console.log('Produced ', devices, ' kWh of solar energy.');
+        console.log('Produced ', producedEnergy, ' kWh of solar energy.');
         // Send tokens to the user
         erc20Contract.methods
           .transfer(userAddress, tokensToSend)
-          .send({ from: '0xC4F9239d8dB6D37489fFF9AC0394DC3eb728F162', gas: 100000 })
+          .send({ from: '0xecbEdFaE1549c5664d70F436Ca544DcAC6fA41d8', gas: 100000 })
           .then(receipt => {
             console.log(`Congratulation 🎉💰 you earned ${tokensToSend / 10 ** 18} Solaria tokens for producing electricity.\n`);
             console.log(`Wallet adress: ${userAddress}`);
@@ -322,16 +330,12 @@ async function test() {
           .catch(error => {
             console.error(error);
           });
-        // Give a reward to the user
-        //web3.utils.toBN(wallet_balance) += web3.utils.toBN(tokensToSend);
-        // Print the award information
-        //console.log("Wallet balance: ", wallet_balance, currency_name, "\n");
         myArray[0] = lastElement;
-      }*/
-      //let logout = await growatt.logout().catch(e => {console.log(e)})
+      }
+      //let logout = await device0.logout().catch(e => {console.log(e)})
       await sleep(60000);
     }
   }
 }
 
-test();
+main();
